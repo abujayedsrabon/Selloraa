@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store | Selloraa</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-white text-black min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
+            <div class="flex items-center gap-12">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                        <i data-lucide="shopping-bag" class="text-white w-5 h-5"></i>
+                    </div>
+                    <span id="store-name" class="text-xl font-extrabold tracking-tighter uppercase">STORE</span>
+                </div>
+                <div class="hidden md:flex items-center gap-8 text-sm font-bold text-gray-400">
+                    <a href="#" class="text-black hover:text-black transition-colors">Shop</a>
+                    <a href="#" class="hover:text-black transition-colors">Collections</a>
+                    <a href="#" class="hover:text-black transition-colors">About</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <button onclick="toggleTracking(true)" class="text-sm font-bold text-gray-400 hover:text-black transition-all flex items-center gap-2">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i> Track Order
+                </button>
+                <button onclick="toggleCart(true)" class="relative group">
+                    <div class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center group-hover:bg-black transition-all duration-300">
+                        <i data-lucide="shopping-cart" class="w-5 h-5 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <span id="cart-count" class="absolute -top-2 -right-2 w-6 h-6 bg-black text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-40 pb-20 px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 gap-20 items-center">
+                <div>
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 block">New Collection 2026</span>
+                    <h1 class="text-7xl font-extrabold tracking-tighter leading-[0.9] mb-8">Elevate Your <br>Everyday Living.</h1>
+                    <p class="text-xl text-gray-500 max-w-md mb-12 leading-relaxed">Discover a curated selection of premium essentials designed for modern life.</p>
+                    <div class="flex items-center gap-6">
+                        <button class="px-10 py-5 bg-black text-white rounded-2xl font-bold hover:bg-gray-800 transition-all shadow-2xl shadow-gray-200">
+                            Shop Collection
+                        </button>
+                        <button class="px-10 py-5 bg-white border border-gray-100 rounded-2xl font-bold hover:bg-gray-50 transition-all">
+                            View Lookbook
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="aspect-[4/5] bg-gray-50 rounded-[60px] overflow-hidden">
+                        <img src="https://picsum.photos/seed/minimal/800/1000" alt="Hero" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -bottom-10 -left-10 bg-white p-8 rounded-[40px] shadow-2xl border border-gray-50 flex items-center gap-6">
+                        <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="star" class="text-black w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-extrabold tracking-tight">4.9/5</p>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Customer Rating</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Product Grid -->
+    <section class="py-20 px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-end mb-16">
+                <div>
+                    <h2 class="text-4xl font-extrabold tracking-tight mb-4">Featured Products</h2>
+                    <p class="text-gray-400 font-bold">Explore our most popular items this season.</p>
+                </div>
+                <div class="flex gap-4">
+                    <button class="w-12 h-12 rounded-2xl border border-gray-100 flex items-center justify-center hover:bg-black hover:text-white transition-all">
+                        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                    </button>
+                    <button class="w-12 h-12 rounded-2xl border border-gray-100 flex items-center justify-center hover:bg-black hover:text-white transition-all">
+                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-4 gap-8">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleCart(false)"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white p-12 shadow-2xl flex flex-col">
+            <div class="flex justify-between items-center mb-12">
+                <h3 class="text-3xl font-bold tracking-tight">Your Bag</h3>
+                <button onclick="toggleCart(false)" class="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center hover:bg-black hover:text-white transition-all">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div id="cart-items" class="flex-1 space-y-8 overflow-y-auto pr-4">
+                <!-- Cart items -->
+            </div>
+
+            <div class="mt-12 pt-12 border-t border-gray-100">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="text-gray-400 font-bold uppercase text-xs tracking-widest">Subtotal</span>
+                    <span id="cart-total" class="text-3xl font-extrabold tracking-tight">$0.00</span>
+                </div>
+                <button onclick="showCheckout()" class="w-full bg-black text-white py-6 rounded-3xl font-bold hover:bg-gray-800 transition-all shadow-2xl shadow-gray-200">
+                    Checkout Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="hideCheckout()"></div>
+        <div class="bg-white w-full max-w-xl rounded-[40px] p-12 relative z-10 shadow-2xl overflow-hidden">
+            <div id="checkout-step-1">
+                <h3 class="text-3xl font-bold mb-2 tracking-tight">Checkout</h3>
+                <p class="text-gray-400 mb-10">Complete your order details below.</p>
+                
+                <form id="checkout-form" class="space-y-6">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Full Name</label>
+                            <input type="text" id="cust_name" required class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Email</label>
+                            <input type="email" id="cust_email" required class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Phone Number</label>
+                        <input type="tel" id="cust_phone" required class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                    </div>
+                    <button type="submit" class="w-full bg-black text-white py-5 rounded-2xl font-bold hover:bg-gray-800 transition-all">
+                        Continue to Verification
+                    </button>
+                </form>
+            </div>
+
+            <div id="otp-step" class="hidden text-center">
+                <div class="w-20 h-20 bg-black text-white rounded-3xl flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="smartphone" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Verify Phone</h3>
+                <p class="text-gray-400 mb-6">We've sent a 6-digit code to your phone.</p>
+                
+                <!-- Risk Assessment Feedback -->
+                <div id="risk-assessment" class="mb-8 p-4 bg-gray-50 rounded-2xl border border-gray-100 flex items-center space-x-4 text-left">
+                    <div id="risk-icon-container" class="w-12 h-12 rounded-xl flex items-center justify-center">
+                        <i data-lucide="shield-check" id="risk-icon" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Security Check</p>
+                        <p id="risk-level-text" class="font-bold text-sm">Analyzing order risk...</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-3 mb-8">
+                    <input type="text" maxlength="6" id="otp_input" class="w-full max-w-[200px] text-center text-3xl font-bold tracking-[10px] px-4 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                </div>
+                
+                <button onclick="verifyOtp()" class="w-full bg-black text-white py-5 rounded-2xl font-bold hover:bg-gray-800 transition-all">
+                    Verify & Place Order
+                </button>
+            </div>
+
+            <div id="success-step" class="hidden text-center py-10 space-y-6">
+                <div class="w-20 h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto">
+                    <i data-lucide="check-circle" class="w-12 h-12"></i>
+                </div>
+                <h3 class="text-2xl font-bold">Order Confirmed!</h3>
+                <p class="text-gray-400">Thank you for your purchase. Your order is being processed.</p>
+                <div class="p-6 bg-gray-50 rounded-3xl inline-block border border-gray-100">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Tracking ID</p>
+                    <p id="order-tracking-id" class="font-mono font-bold text-xl tracking-wider">SLR-XXXXXX</p>
+                </div>
+                <button onclick="closeCheckout()" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-gray-800 transition-all">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Tracking Modal -->
+    <div id="tracking-modal" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleTracking(false)"></div>
+        <div class="bg-white w-full max-w-md rounded-[40px] p-10 relative z-10 shadow-2xl">
+            <h3 class="text-3xl font-bold mb-2 tracking-tight">Track Order</h3>
+            <p class="text-gray-400 mb-8">Enter your tracking ID to see order status.</p>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Tracking ID</label>
+                    <input type="text" id="track-id-input" placeholder="e.g. SLR-123456" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                </div>
+                <button onclick="trackOrder()" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-gray-800 transition-all">Track Status</button>
+                
+                <div id="tracking-result" class="hidden pt-8 border-t border-gray-100 space-y-6">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400 font-bold uppercase text-[10px] tracking-widest">Status</span>
+                        <span id="track-status" class="px-4 py-1 bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-widest">In Transit</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400 font-bold uppercase text-[10px] tracking-widest">Customer</span>
+                        <span id="track-customer" class="font-bold">John Doe</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400 font-bold uppercase text-[10px] tracking-widest">Courier</span>
+                        <span id="track-courier" class="font-bold">Selloraa Express</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        let vendorData = null;
+        let cart = [];
+        let currentOtp = null;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+
+        async function initStore() {
+            const response = await fetch(`/php/api/vendor_api.php?slug=${slug || 'minimalist-store'}`);
+            vendorData = await response.json();
+            
+            document.getElementById('store-name').innerText = vendorData.store_name;
+            loadProducts();
+        }
+
+        async function loadProducts() {
+            const grid = document.getElementById('product-grid');
+            const response = await fetch(`/php/api/product_api.php?action=list&vendor_id=${vendorData.uid}`);
+            const products = await response.json();
+
+            grid.innerHTML = products.map(p => `
+                <div class="group bg-white rounded-[40px] border border-gray-50 overflow-hidden hover:shadow-2xl hover:shadow-gray-100 transition-all duration-500">
+                    <div class="aspect-[4/5] bg-gray-50 flex items-center justify-center relative overflow-hidden">
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <button onclick="addToCart(${p.id}, '${p.name}', ${p.price})" class="absolute bottom-8 left-8 right-8 py-5 bg-white text-black rounded-2xl font-bold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-2xl">
+                            Add to Bag
+                        </button>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="font-bold text-xl mb-2">${p.name}</h3>
+                        <p class="text-gray-400 font-bold">$${parseFloat(p.price).toFixed(2)}</p>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function addToCart(id, name, price) {
+            cart.push({ id, name, price });
+            updateCartUI();
+            toggleCart(true);
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const itemsList = document.getElementById('cart-items');
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
+            
+            itemsList.innerHTML = cart.map((item, index) => `
+                <div class="flex items-center justify-between group">
+                    <div class="flex items-center gap-6">
+                        <div class="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center overflow-hidden">
+                            <img src="https://picsum.photos/seed/${item.id}/200/200" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <p class="font-bold text-lg">${item.name}</p>
+                            <p class="text-sm text-gray-400 font-bold">$${item.price.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${index})" class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-300 hover:bg-red-50 hover:text-red-500 transition-all">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function toggleCart(show) {
+            const sidebar = document.getElementById('cart-sidebar');
+            if (show) sidebar.classList.remove('hidden');
+            else sidebar.classList.add('hidden');
+        }
+
+        function showCheckout() {
+            if (cart.length === 0) return alert('Your bag is empty!');
+            toggleCart(false);
+            document.getElementById('checkout-modal').classList.remove('hidden');
+            document.getElementById('checkout-step-1').classList.remove('hidden');
+            document.getElementById('otp-step').classList.add('hidden');
+            document.getElementById('success-step').classList.add('hidden');
+        }
+
+        function hideCheckout() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function closeCheckout() {
+            hideCheckout();
+            window.location.reload();
+        }
+
+        function toggleTracking(show) {
+            const modal = document.getElementById('tracking-modal');
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        }
+
+        async function trackOrder() {
+            const id = document.getElementById('track-id-input').value;
+            if (!id) return;
+            
+            const response = await fetch(`/php/api/order_api.php?action=track_order&tracking_id=${id}`);
+            const data = await response.json();
+            
+            if (response.ok) {
+                document.getElementById('tracking-result').classList.remove('hidden');
+                document.getElementById('track-status').innerText = data.courier_status || 'Processing';
+                document.getElementById('track-customer').innerText = data.customer_name;
+                document.getElementById('track-courier').innerText = 'Selloraa Express';
+            } else {
+                alert(data.message);
+            }
+        }
+
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const phone = document.getElementById('cust_phone').value;
+            const name = document.getElementById('cust_name').value;
+            const email = document.getElementById('cust_email').value;
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+            if (vendorData.otp_enabled) {
+                const response = await fetch('/php/api/otp_api.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'send_otp',
+                        vendor_uid: vendorData.uid,
+                        phone: phone
+                    })
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    currentOtp = result.otp;
+                    document.getElementById('checkout-step-1').classList.add('hidden');
+                    document.getElementById('otp-step').classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        const score = Math.floor(Math.random() * 100);
+                        let level = 'Low';
+                        let color = 'bg-green-50 text-green-600';
+                        if (score > 70) { level = 'High'; color = 'bg-red-50 text-red-600'; }
+                        else if (score > 30) { level = 'Medium'; color = 'bg-yellow-50 text-yellow-600'; }
+                        
+                        document.getElementById('risk-level-text').innerText = `${level} Risk Order (${score}%)`;
+                        document.getElementById('risk-icon-container').className = `w-12 h-12 rounded-xl flex items-center justify-center ${color}`;
+                    }, 1500);
+                } else {
+                    alert(result.message);
+                }
+            } else {
+                placeOrder();
+            }
+        });
+
+        async function verifyOtp() {
+            const userInput = document.getElementById('otp_input').value;
+            const response = await fetch('/php/api/otp_api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'verify_otp',
+                    otp: currentOtp,
+                    user_input_otp: userInput
+                })
+            });
+            if (response.ok) {
+                placeOrder();
+            } else {
+                alert('Invalid OTP. Please try again.');
+            }
+        }
+
+        async function placeOrder() {
+            const phone = document.getElementById('cust_phone').value;
+            const name = document.getElementById('cust_name').value;
+            const email = document.getElementById('cust_email').value;
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+            const response = await fetch('/php/api/order_api.php?action=place_order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    vendor_id: vendorData.uid,
+                    customer_name: name,
+                    customer_email: email,
+                    customer_phone: phone,
+                    total: total
+                })
+            });
+            const result = await response.json();
+            
+            if (response.ok) {
+                cart = [];
+                updateCartUI();
+                document.getElementById('otp-step').classList.add('hidden');
+                document.getElementById('checkout-step-1').classList.add('hidden');
+                document.getElementById('success-step').classList.remove('hidden');
+                document.getElementById('order-tracking-id').innerText = `SLR-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
+            } else {
+                alert(result.message);
+            }
+        }
+
+        initStore();
+    </script>
+</body>
+</html>

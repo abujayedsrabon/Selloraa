@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Selloraa</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .sidebar-link.active { background: #000; color: #fff; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-gray-100 flex flex-col p-8 fixed h-full">
+        <div class="inline-flex items-center gap-2 mb-12">
+            <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <i data-lucide="shield" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="text-xl font-extrabold tracking-tighter">ADMIN</span>
+        </div>
+
+        <nav class="space-y-2 flex-1">
+            <button onclick="showSection('overview')" class="sidebar-link active w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
+                <i data-lucide="layout-grid" class="w-5 h-5"></i> Overview
+            </button>
+            <button onclick="showSection('vendors')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
+                <i data-lucide="users" class="w-5 h-5"></i> Vendors
+            </button>
+            <button onclick="showSection('withdrawals')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
+                <i data-lucide="wallet" class="w-5 h-5"></i> Withdrawals
+            </button>
+            <button onclick="showSection('settings')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
+                <i data-lucide="settings" class="w-5 h-5"></i> Settings
+            </button>
+        </nav>
+
+        <div class="mt-auto pt-8 border-t border-gray-50">
+            <button onclick="logout()" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm text-red-500 hover:bg-red-50 transition-all">
+                <i data-lucide="log-out" class="w-5 h-5"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-72 p-12">
+        <header class="flex justify-between items-center mb-12">
+            <div>
+                <h1 id="section-title" class="text-4xl font-extrabold tracking-tight">Admin Overview</h1>
+                <p id="section-desc" class="text-gray-400 mt-2">Manage the entire Selloraa platform.</p>
+            </div>
+            <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center">
+                <i data-lucide="user" class="text-white w-6 h-6"></i>
+            </div>
+        </header>
+
+        <!-- Sections -->
+        <div id="overview-section" class="section space-y-12">
+            <div class="grid grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Total Revenue</p>
+                    <h2 id="total-revenue" class="text-4xl font-extrabold tracking-tight">$0.00</h2>
+                </div>
+                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Total Vendors</p>
+                    <h2 id="total-vendors" class="text-4xl font-extrabold tracking-tight">0</h2>
+                </div>
+                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Total Orders</p>
+                    <h2 id="total-orders" class="text-4xl font-extrabold tracking-tight">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <div id="withdrawals-section" class="section hidden">
+            <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm">
+                <h3 class="text-2xl font-bold mb-8 tracking-tight">Pending Withdrawals</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-50">
+                                <th class="pb-6">Store Name</th>
+                                <th class="pb-6">Amount</th>
+                                <th class="pb-6">Method</th>
+                                <th class="pb-6">Status</th>
+                                <th class="pb-6">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="withdrawal-list">
+                            <!-- Withdrawals -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="settings-section" class="section hidden">
+            <div class="max-w-md bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm">
+                <h3 class="text-2xl font-bold mb-8 tracking-tight">Platform Settings</h3>
+                <form id="admin-settings-form" class="space-y-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">OTP Price ($)</label>
+                        <input type="number" step="0.01" id="otp_price" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                    </div>
+                    <button type="submit" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-gray-800 transition-all">Save Settings</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        const userRole = localStorage.getItem('user_role');
+        if (userRole !== 'admin') window.location.href = '../login.html';
+
+        async function init() {
+            const response = await fetch('/php/api/admin_api.php?action=dashboard');
+            const data = await response.json();
+            
+            document.getElementById('total-revenue').innerText = `$${data.total_revenue.toFixed(2)}`;
+            document.getElementById('total-vendors').innerText = data.total_vendors;
+            document.getElementById('total-orders').innerText = data.total_orders;
+            
+            loadWithdrawals();
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`${id}-section`).classList.remove('hidden');
+            
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            document.getElementById('section-title').innerText = 'Admin ' + id.charAt(0).toUpperCase() + id.slice(1);
+        }
+
+        async function loadWithdrawals() {
+            const response = await fetch('/php/api/admin_api.php?action=withdrawals');
+            const withdrawals = await response.json();
+            
+            const html = withdrawals.map(w => `
+                <tr class="border-b border-gray-50">
+                    <td class="py-6 font-bold">${w.store_name}</td>
+                    <td class="py-6 font-bold">$${w.amount.toFixed(2)}</td>
+                    <td class="py-6 font-bold uppercase text-xs tracking-widest">${w.payment_method}</td>
+                    <td class="py-6">
+                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${w.status === 'pending' ? 'bg-yellow-50 text-yellow-600' : 'bg-green-50 text-green-600'}">
+                            ${w.status}
+                        </span>
+                    </td>
+                    <td class="py-6">
+                        ${w.status === 'pending' ? `<button onclick="approveWithdrawal(${w.id})" class="text-sm font-bold hover:underline">Approve</button>` : '-'}
+                    </td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('withdrawal-list').innerHTML = html;
+        }
+
+        async function approveWithdrawal(id) {
+            const response = await fetch('/php/api/admin_api.php?action=approve_withdrawal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            if (response.ok) {
+                alert('Withdrawal approved!');
+                loadWithdrawals();
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '../login.html';
+        }
+
+        init();
+    </script>
+</body>
+</html>

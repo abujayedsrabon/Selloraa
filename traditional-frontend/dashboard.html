@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Dashboard | Selloraa</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .sidebar-link.active { background: #000; color: #fff; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-gray-100 flex flex-col p-8 fixed h-full">
+        <div class="inline-flex items-center gap-2 mb-12">
+            <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <i data-lucide="shopping-bag" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="text-xl font-extrabold tracking-tighter">SELLORAA</span>
+        </div>
+
+        <nav class="space-y-2 flex-1">
+            <button onclick="showSection('overview')" class="sidebar-link active w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
+                <i data-lucide="layout-grid" class="w-5 h-5"></i> Overview
+            </button>
+            <button onclick="showSection('products')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
+                <i data-lucide="package" class="w-5 h-5"></i> Products
+            </button>
+            <button onclick="showSection('orders')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i> Orders
+            </button>
+            <button onclick="showSection('wallet')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
+                <i data-lucide="wallet" class="w-5 h-5"></i> Wallet
+            </button>
+            <button onclick="showSection('settings')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
+                <i data-lucide="settings" class="w-5 h-5"></i> Settings
+            </button>
+        </nav>
+
+        <div class="mt-auto pt-8 border-t border-gray-50">
+            <button onclick="logout()" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm text-red-500 hover:bg-red-50 transition-all">
+                <i data-lucide="log-out" class="w-5 h-5"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-72 p-12">
+        <header class="flex justify-between items-center mb-12">
+            <div>
+                <h1 id="section-title" class="text-4xl font-extrabold tracking-tight">Overview</h1>
+                <p id="section-desc" class="text-gray-400 mt-2">Welcome back to your store management.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <a id="view-store-btn" href="#" target="_blank" class="px-6 py-3 bg-white border border-gray-100 rounded-2xl font-bold text-sm hover:bg-gray-50 transition-all flex items-center gap-2">
+                    <i data-lucide="external-link" class="w-4 h-4"></i> View Store
+                </a>
+                <div class="w-12 h-12 bg-gray-200 rounded-2xl"></div>
+            </div>
+        </header>
+
+        <!-- Sections -->
+        <div id="overview-section" class="section space-y-12">
+            <div class="grid grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Total Revenue</p>
+                    <h2 id="total-revenue" class="text-4xl font-extrabold tracking-tight">$0.00</h2>
+                </div>
+                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Total Orders</p>
+                    <h2 id="total-orders-count" class="text-4xl font-extrabold tracking-tight">0</h2>
+                </div>
+                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Available Balance</p>
+                    <h2 id="current-balance" class="text-4xl font-extrabold tracking-tight">$0.00</h2>
+                </div>
+            </div>
+
+            <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm">
+                <h3 class="text-2xl font-bold mb-8 tracking-tight">Recent Orders</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-50">
+                                <th class="pb-6">Order ID</th>
+                                <th class="pb-6">Customer</th>
+                                <th class="pb-6">Total</th>
+                                <th class="pb-6">Risk</th>
+                                <th class="pb-6">Status</th>
+                                <th class="pb-6">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-orders-list">
+                            <!-- Mock orders -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="products-section" class="section hidden space-y-8">
+            <div class="flex justify-between items-center">
+                <h3 class="text-2xl font-bold tracking-tight">Your Products</h3>
+                <button onclick="openProductModal()" class="px-8 py-4 bg-black text-white rounded-2xl font-bold hover:bg-gray-800 transition-all flex items-center gap-2">
+                    <i data-lucide="plus" class="w-5 h-5"></i> Add Product
+                </button>
+            </div>
+            <div id="product-list" class="grid grid-cols-4 gap-8">
+                <!-- Products -->
+            </div>
+        </div>
+
+        <div id="orders-section" class="section hidden">
+            <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm">
+                <h3 class="text-2xl font-bold mb-8 tracking-tight">All Orders</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-50">
+                                <th class="pb-6">Order ID</th>
+                                <th class="pb-6">Customer</th>
+                                <th class="pb-6">Total</th>
+                                <th class="pb-6">Risk</th>
+                                <th class="pb-6">Status</th>
+                                <th class="pb-6">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="full-orders-list">
+                            <!-- All orders -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="wallet-section" class="section hidden space-y-12">
+            <div class="grid grid-cols-2 gap-8">
+                <div class="bg-black text-white p-12 rounded-[40px] shadow-2xl shadow-gray-200">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Available for Withdrawal</p>
+                    <h2 id="wallet-balance" class="text-6xl font-extrabold tracking-tighter mb-12">$0.00</h2>
+                    <button onclick="openWithdrawModal()" class="w-full bg-white text-black py-5 rounded-2xl font-bold hover:bg-gray-100 transition-all">
+                        Request Payout
+                    </button>
+                </div>
+                <div class="bg-white p-12 rounded-[40px] border border-gray-100 shadow-sm">
+                    <h3 class="text-2xl font-bold mb-8 tracking-tight">Recent Transactions</h3>
+                    <div id="transaction-list" class="space-y-6">
+                        <!-- Transactions -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="settings-section" class="section hidden space-y-12">
+            <div class="max-w-2xl bg-white p-12 rounded-[40px] border border-gray-100 shadow-sm">
+                <h3 class="text-2xl font-bold mb-8 tracking-tight">Store Settings</h3>
+                <form id="settings-form" class="space-y-8">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Store Name</label>
+                            <input type="text" id="set_store_name" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Location</label>
+                            <input type="text" id="set_location" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Logo URL</label>
+                        <input type="url" id="set_logo" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                    </div>
+                    <div class="flex items-center justify-between p-6 bg-gray-50 rounded-3xl">
+                        <div>
+                            <p class="font-bold">OTP Verification</p>
+                            <p class="text-xs text-gray-400">Secure orders with SMS verification</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="set_otp_enabled" class="sr-only peer">
+                            <div class="w-14 h-8 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-black"></div>
+                        </label>
+                    </div>
+                    <button type="submit" class="w-full bg-black text-white py-5 rounded-2xl font-bold hover:bg-gray-800 transition-all shadow-xl shadow-gray-200">
+                        Save Changes
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        const vendorUid = localStorage.getItem('vendor_uid');
+        if (!vendorUid) window.location.href = 'login.html';
+
+        let vendorData = null;
+
+        async function init() {
+            const response = await fetch(`/php/api/vendor_api.php?uid=${vendorUid}`);
+            vendorData = await response.json();
+            
+            document.getElementById('set_store_name').value = vendorData.store_name;
+            document.getElementById('set_location').value = vendorData.location;
+            document.getElementById('set_logo').value = vendorData.logo || '';
+            document.getElementById('set_otp_enabled').checked = vendorData.otp_enabled;
+            
+            document.getElementById('total-revenue').innerText = `$${parseFloat(vendorData.balance || 0).toFixed(2)}`;
+            document.getElementById('current-balance').innerText = `$${parseFloat(vendorData.balance || 0).toFixed(2)}`;
+            document.getElementById('wallet-balance').innerText = `$${parseFloat(vendorData.balance || 0).toFixed(2)}`;
+            
+            document.getElementById('view-store-btn').href = `store.html?slug=${vendorData.slug}`;
+            
+            loadOrders();
+            loadProducts();
+        }
+
+        async function loadOrders() {
+            const response = await fetch(`/php/api/admin_api.php?action=orders&vendor_id=${vendorUid}`);
+            const orders = await response.json();
+            
+            const html = orders.map(o => `
+                <tr class="border-b border-gray-50">
+                    <td class="py-6 font-bold">#${o.id}</td>
+                    <td class="py-6 font-bold text-sm">${o.customer_name}</td>
+                    <td class="py-6 font-bold">$${parseFloat(o.total).toFixed(2)}</td>
+                    <td class="py-6">
+                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${o.risk_level === 'high' ? 'bg-red-50 text-red-600' : o.risk_level === 'medium' ? 'bg-yellow-50 text-yellow-600' : 'bg-green-50 text-green-600'}">
+                            ${o.risk_level} Risk
+                        </span>
+                    </td>
+                    <td class="py-6">
+                        <span class="px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-[10px] font-bold uppercase tracking-widest">${o.status}</span>
+                    </td>
+                    <td class="py-6">
+                        <button onclick="manageOrder('${o.id}')" class="text-sm font-bold hover:underline">Manage</button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('recent-orders-list').innerHTML = html;
+            document.getElementById('full-orders-list').innerHTML = html;
+            document.getElementById('total-orders-count').innerText = orders.length;
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`${id}-section`).classList.remove('hidden');
+            
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            document.getElementById('section-title').innerText = id.charAt(0).toUpperCase() + id.slice(1);
+            document.getElementById('section-desc').innerText = `Manage your store's ${id} here.`;
+        }
+
+        async function loadProducts() {
+            const response = await fetch(`/php/api/product_api.php?action=list&vendor_id=${vendorUid}`);
+            const products = await response.json();
+            
+            const html = products.map(p => `
+                <div class="bg-white p-6 rounded-[40px] border border-gray-100 shadow-sm group">
+                    <div class="aspect-square bg-gray-50 rounded-3xl mb-6 overflow-hidden">
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition-all duration-500">
+                    </div>
+                    <h4 class="font-bold text-lg mb-1">${p.name}</h4>
+                    <p class="text-gray-400 font-bold mb-4">$${p.price.toFixed(2)}</p>
+                    <button onclick="deleteProduct(${p.id})" class="text-xs font-bold text-red-500 hover:underline">Delete</button>
+                </div>
+            `).join('');
+            
+            document.getElementById('product-list').innerHTML = html;
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('Are you sure?')) return;
+            const response = await fetch('/php/api/product_api.php?action=delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            if (response.ok) {
+                loadProducts();
+            }
+        }
+
+        async function openProductModal() {
+            const name = prompt('Product Name:');
+            const price = parseFloat(prompt('Price:'));
+            const image = prompt('Image URL:', 'https://picsum.photos/seed/new/800/1000');
+            
+            if (name && price) {
+                const response = await fetch('/php/api/product_api.php?action=add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ vendor_id: vendorUid, name, price, image })
+                });
+                if (response.ok) {
+                    loadProducts();
+                }
+            }
+        }
+
+        document.getElementById('settings-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                uid: vendorUid,
+                store_name: document.getElementById('set_store_name').value,
+                location: document.getElementById('set_location').value,
+                logo: document.getElementById('set_logo').value,
+                otp_enabled: document.getElementById('set_otp_enabled').checked
+            };
+            
+            const response = await fetch('/php/api/vendor_api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            if (response.ok) {
+                alert('Settings updated!');
+                init();
+            }
+        });
+
+        async function openWithdrawModal() {
+            const amount = parseFloat(prompt('Withdrawal Amount:'));
+            const method = prompt('Payment Method (bkash/nagad/bank):', 'bkash');
+            
+            if (amount && method) {
+                const response = await fetch('/php/api/withdrawal_api.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'request_withdrawal', vendor_id: vendorUid, amount, payment_method: method })
+                });
+                if (response.ok) {
+                    alert('Withdrawal requested!');
+                    init();
+                } else {
+                    const res = await response.json();
+                    alert(res.message);
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        init();
+    </script>
+</body>
+</html>

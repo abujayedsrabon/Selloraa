@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "Vendor": {
+      "title": "Vendor",
+      "description": "A vendor profile containing store information.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique ID of the vendor." },
+        "storeName": { "type": "string", "description": "The name of the store." },
+        "slug": { "type": "string", "description": "The unique URL slug for the store." },
+        "logo": { "type": "string", "description": "The URL of the store logo." },
+        "location": { "type": "string", "description": "The physical location of the store." },
+        "packageId": { "type": "string", "description": "The ID of the purchased package." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The date and time the vendor profile was created." }
+      },
+      "required": ["uid", "storeName", "slug", "createdAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "A product listed by a vendor.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the product." },
+        "vendorId": { "type": "string", "description": "The ID of the vendor who owns the product." },
+        "name": { "type": "string", "description": "The name of the product." },
+        "description": { "type": "string", "description": "The description of the product." },
+        "price": { "type": "number", "description": "The price of the product." },
+        "stock": { "type": "integer", "description": "The quantity of the product in stock." },
+        "imageUrl": { "type": "string", "description": "The URL of the product image." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The date and time the product was listed." }
+      },
+      "required": ["id", "vendorId", "name", "price", "stock", "createdAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "An order placed by a customer.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the order." },
+        "vendorId": { "type": "string", "description": "The ID of the vendor who receives the order." },
+        "customerName": { "type": "string", "description": "The name of the customer." },
+        "customerEmail": { "type": "string", "description": "The email of the customer." },
+        "items": { "type": "array", "items": { "type": "object" }, "description": "The list of items in the order." },
+        "total": { "type": "number", "description": "The total amount of the order." },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "shipped", "delivered"], "description": "The status of the order." },
+        "fakeProbability": { "type": "number", "description": "The probability score (0-1) that the order is fake." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The date and time the order was placed." }
+      },
+      "required": ["id", "vendorId", "customerName", "customerEmail", "items", "total", "status", "createdAt"]
+    },
+    "Slug": {
+      "title": "Slug",
+      "description": "A mapping from slug to vendor ID.",
+      "type": "object",
+      "properties": {
+        "vendorId": { "type": "string", "description": "The ID of the vendor associated with the slug." }
+      },
+      "required": ["vendorId"]
+    }
+  },
+  "firestore": {
+    "/vendors/{vendorId}": {
+      "schema": "Vendor",
+      "description": "Vendor profiles."
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Product listings."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer orders."
+    },
+    "/slugs/{slug}": {
+      "schema": "Slug",
+      "description": "Slug to vendor ID mappings."
+    }
+  }
+}
