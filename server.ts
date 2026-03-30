@@ -34,9 +34,11 @@ let mockProducts: any[] = [
 let otpPrice = 0.10;
 
 app.all("/php/api/auth_api.php", (req, res) => {
-    const { action, email, password, store_name, location } = req.body;
+    console.log(`Auth API hit: ${req.method} ${JSON.stringify(req.body)}`);
+    const { action, email, password, store_name, location } = req.body || {};
     
     if (action === 'register') {
+        if (!email || !password || !store_name) return res.status(400).json({ message: "Missing required fields." });
         if (mockUsers[email]) return res.status(400).json({ message: "User already exists." });
         const uid = 'V_' + Math.random().toString(36).substr(2, 9);
         const slug = store_name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -46,12 +48,15 @@ app.all("/php/api/auth_api.php", (req, res) => {
     }
     
     if (action === 'login') {
+        if (!email || !password) return res.status(400).json({ message: "Email and password required." });
         const user = mockUsers[email];
         if (user && user.password === password) {
             return res.json({ message: "Login successful.", uid: user.uid, role: user.role });
         }
         return res.status(401).json({ message: "Invalid credentials." });
     }
+
+    return res.status(400).json({ message: "Invalid action." });
 });
 
 app.all("/php/api/vendor_api.php", (req, res) => {

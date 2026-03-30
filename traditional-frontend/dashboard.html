@@ -6,37 +6,42 @@
     <title>Vendor Dashboard | Selloraa</title>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .sidebar-link.active { background: #000; color: #fff; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .sidebar-link.active { background: #000; color: #fff; box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1); }
+        .sidebar-link.active i { color: #fff; }
+        .section { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex">
+<body class="bg-[#F9FAFB] min-h-screen flex selection:bg-black selection:text-white">
     <!-- Sidebar -->
-    <aside class="w-72 bg-white border-r border-gray-100 flex flex-col p-8 fixed h-full">
-        <div class="inline-flex items-center gap-2 mb-12">
-            <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+    <aside class="w-72 bg-white border-r border-gray-100 flex flex-col p-8 fixed h-full z-50">
+        <div class="inline-flex items-center gap-3 mb-12">
+            <div class="w-9 h-9 bg-black rounded-xl flex items-center justify-center shadow-lg shadow-black/10">
                 <i data-lucide="shopping-bag" class="text-white w-5 h-5"></i>
             </div>
-            <span class="text-xl font-extrabold tracking-tighter">SELLORAA</span>
+            <span class="text-xl font-extrabold tracking-tighter font-display uppercase">SELLORAA</span>
         </div>
 
-        <nav class="space-y-2 flex-1">
-            <button onclick="showSection('overview')" class="sidebar-link active w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
-                <i data-lucide="layout-grid" class="w-5 h-5"></i> Overview
+        <nav class="space-y-1.5 flex-1">
+            <button onclick="showSection('overview')" class="sidebar-link active w-full flex items-center gap-3 px-5 py-3.5 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black group">
+                <i data-lucide="layout-grid" class="w-5 h-5 group-hover:text-black transition-colors"></i> Overview
             </button>
-            <button onclick="showSection('products')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
-                <i data-lucide="package" class="w-5 h-5"></i> Products
+            <button onclick="showSection('products')" class="sidebar-link w-full flex items-center gap-3 px-5 py-3.5 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black group">
+                <i data-lucide="package" class="w-5 h-5 group-hover:text-black transition-colors"></i> Products
             </button>
-            <button onclick="showSection('orders')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
-                <i data-lucide="shopping-cart" class="w-5 h-5"></i> Orders
+            <button onclick="showSection('orders')" class="sidebar-link w-full flex items-center gap-3 px-5 py-3.5 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black group">
+                <i data-lucide="shopping-cart" class="w-5 h-5 group-hover:text-black transition-colors"></i> Orders
             </button>
-            <button onclick="showSection('wallet')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
-                <i data-lucide="wallet" class="w-5 h-5"></i> Wallet
+            <button onclick="showSection('wallet')" class="sidebar-link w-full flex items-center gap-3 px-5 py-3.5 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black group">
+                <i data-lucide="wallet" class="w-5 h-5 group-hover:text-black transition-colors"></i> Wallet
             </button>
-            <button onclick="showSection('settings')" class="sidebar-link w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black">
-                <i data-lucide="settings" class="w-5 h-5"></i> Settings
+            <button onclick="showSection('settings')" class="sidebar-link w-full flex items-center gap-3 px-5 py-3.5 rounded-2xl font-bold text-sm transition-all text-gray-400 hover:bg-gray-50 hover:text-black group">
+                <i data-lucide="settings" class="w-5 h-5 group-hover:text-black transition-colors"></i> Settings
             </button>
         </nav>
 
@@ -51,36 +56,41 @@
     <main class="flex-1 ml-72 p-12">
         <header class="flex justify-between items-center mb-12">
             <div>
-                <h1 id="section-title" class="text-4xl font-extrabold tracking-tight">Overview</h1>
-                <p id="section-desc" class="text-gray-400 mt-2">Welcome back to your store management.</p>
+                <h1 id="section-title" class="text-4xl font-extrabold tracking-tight font-display">Overview</h1>
+                <p id="section-desc" class="text-gray-400 mt-2 font-medium">Welcome back to your store management.</p>
             </div>
-            <div class="flex items-center gap-4">
-                <a id="view-store-btn" href="#" target="_blank" class="px-6 py-3 bg-white border border-gray-100 rounded-2xl font-bold text-sm hover:bg-gray-50 transition-all flex items-center gap-2">
+            <div class="flex items-center gap-6">
+                <a id="view-store-btn" href="#" target="_blank" class="px-6 py-3 bg-white border border-gray-100 rounded-2xl font-bold text-sm hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm">
                     <i data-lucide="external-link" class="w-4 h-4"></i> View Store
                 </a>
-                <div class="w-12 h-12 bg-gray-200 rounded-2xl"></div>
+                <div class="w-12 h-12 bg-gray-100 rounded-2xl border border-gray-200 flex items-center justify-center">
+                    <i data-lucide="user" class="text-gray-400 w-6 h-6"></i>
+                </div>
             </div>
         </header>
 
         <!-- Sections -->
         <div id="overview-section" class="section space-y-12">
             <div class="grid grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Total Revenue</p>
-                    <h2 id="total-revenue" class="text-4xl font-extrabold tracking-tight">$0.00</h2>
+                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-md transition-all">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Total Revenue</p>
+                    <h2 id="total-revenue" class="text-4xl font-extrabold tracking-tight font-display">$0.00</h2>
                 </div>
-                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Total Orders</p>
-                    <h2 id="total-orders-count" class="text-4xl font-extrabold tracking-tight">0</h2>
+                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-md transition-all">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Total Orders</p>
+                    <h2 id="total-orders-count" class="text-4xl font-extrabold tracking-tight font-display">0</h2>
                 </div>
-                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Available Balance</p>
-                    <h2 id="current-balance" class="text-4xl font-extrabold tracking-tight">$0.00</h2>
+                <div class="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-md transition-all">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Available Balance</p>
+                    <h2 id="current-balance" class="text-4xl font-extrabold tracking-tight font-display">$0.00</h2>
                 </div>
             </div>
 
             <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm">
-                <h3 class="text-2xl font-bold mb-8 tracking-tight">Recent Orders</h3>
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="text-2xl font-bold tracking-tight font-display">Recent Orders</h3>
+                    <button onclick="showSection('orders')" class="text-xs font-bold text-gray-400 hover:text-black transition-colors">View All</button>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead>
@@ -90,7 +100,7 @@
                                 <th class="pb-6">Total</th>
                                 <th class="pb-6">Risk</th>
                                 <th class="pb-6">Status</th>
-                                <th class="pb-6">Action</th>
+                                <th class="pb-6 text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody id="recent-orders-list">
@@ -103,8 +113,8 @@
 
         <div id="products-section" class="section hidden space-y-8">
             <div class="flex justify-between items-center">
-                <h3 class="text-2xl font-bold tracking-tight">Your Products</h3>
-                <button onclick="openProductModal()" class="px-8 py-4 bg-black text-white rounded-2xl font-bold hover:bg-gray-800 transition-all flex items-center gap-2">
+                <h3 class="text-2xl font-bold tracking-tight font-display">Your Products</h3>
+                <button onclick="openProductModal()" class="px-8 py-4 bg-black text-white rounded-2xl font-bold hover:bg-gray-800 transition-all flex items-center gap-2 shadow-lg shadow-black/10">
                     <i data-lucide="plus" class="w-5 h-5"></i> Add Product
                 </button>
             </div>
@@ -115,7 +125,7 @@
 
         <div id="orders-section" class="section hidden">
             <div class="bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm">
-                <h3 class="text-2xl font-bold mb-8 tracking-tight">All Orders</h3>
+                <h3 class="text-2xl font-bold mb-8 tracking-tight font-display">All Orders</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead>
@@ -125,7 +135,7 @@
                                 <th class="pb-6">Total</th>
                                 <th class="pb-6">Risk</th>
                                 <th class="pb-6">Status</th>
-                                <th class="pb-6">Action</th>
+                                <th class="pb-6 text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody id="full-orders-list">
@@ -138,15 +148,16 @@
 
         <div id="wallet-section" class="section hidden space-y-12">
             <div class="grid grid-cols-2 gap-8">
-                <div class="bg-black text-white p-12 rounded-[40px] shadow-2xl shadow-gray-200">
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Available for Withdrawal</p>
-                    <h2 id="wallet-balance" class="text-6xl font-extrabold tracking-tighter mb-12">$0.00</h2>
-                    <button onclick="openWithdrawModal()" class="w-full bg-white text-black py-5 rounded-2xl font-bold hover:bg-gray-100 transition-all">
+                <div class="bg-black text-white p-12 rounded-[48px] shadow-2xl shadow-black/10 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20"></div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 relative z-10">Available for Withdrawal</p>
+                    <h2 id="wallet-balance" class="text-6xl font-extrabold tracking-tighter mb-12 font-display relative z-10">$0.00</h2>
+                    <button onclick="openWithdrawModal()" class="w-full bg-white text-black py-5 rounded-2xl font-bold hover:bg-gray-100 transition-all relative z-10">
                         Request Payout
                     </button>
                 </div>
-                <div class="bg-white p-12 rounded-[40px] border border-gray-100 shadow-sm">
-                    <h3 class="text-2xl font-bold mb-8 tracking-tight">Recent Transactions</h3>
+                <div class="bg-white p-12 rounded-[48px] border border-gray-100 shadow-sm">
+                    <h3 class="text-2xl font-bold mb-8 tracking-tight font-display">Recent Transactions</h3>
                     <div id="transaction-list" class="space-y-6">
                         <!-- Transactions -->
                     </div>
@@ -155,34 +166,34 @@
         </div>
 
         <div id="settings-section" class="section hidden space-y-12">
-            <div class="max-w-2xl bg-white p-12 rounded-[40px] border border-gray-100 shadow-sm">
-                <h3 class="text-2xl font-bold mb-8 tracking-tight">Store Settings</h3>
+            <div class="max-w-2xl bg-white p-12 rounded-[48px] border border-gray-100 shadow-sm">
+                <h3 class="text-2xl font-bold mb-8 tracking-tight font-display">Store Settings</h3>
                 <form id="settings-form" class="space-y-8">
                     <div class="grid grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Store Name</label>
-                            <input type="text" id="set_store_name" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Store Name</label>
+                            <input type="text" id="set_store_name" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all font-medium">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Location</label>
-                            <input type="text" id="set_location" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Location</label>
+                            <input type="text" id="set_location" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all font-medium">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Logo URL</label>
-                        <input type="url" id="set_logo" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Logo URL</label>
+                        <input type="url" id="set_logo" class="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none transition-all font-medium">
                     </div>
-                    <div class="flex items-center justify-between p-6 bg-gray-50 rounded-3xl">
+                    <div class="flex items-center justify-between p-8 bg-gray-50 rounded-[32px]">
                         <div>
-                            <p class="font-bold">OTP Verification</p>
-                            <p class="text-xs text-gray-400">Secure orders with SMS verification</p>
+                            <p class="font-bold font-display">OTP Verification</p>
+                            <p class="text-xs text-gray-400 font-medium">Secure orders with SMS verification</p>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" id="set_otp_enabled" class="sr-only peer">
                             <div class="w-14 h-8 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-black"></div>
                         </label>
                     </div>
-                    <button type="submit" class="w-full bg-black text-white py-5 rounded-2xl font-bold hover:bg-gray-800 transition-all shadow-xl shadow-gray-200">
+                    <button type="submit" class="w-full bg-black text-white py-5 rounded-2xl font-bold hover:bg-gray-800 transition-all shadow-xl shadow-black/10">
                         Save Changes
                     </button>
                 </form>
